@@ -1,6 +1,7 @@
 
 import numpy as np
-import os 
+import os
+import time 
 import math as mt
 import matplotlib.pyplot as plt
 from Modules.Momentum import Momentum
@@ -19,13 +20,12 @@ All units are taken in SI system (Kilogram,Meter,Second)
 
 """
 Total_time=1
-dt = 0.0001                              # Time step size
-#n = int(Total_time/dt)
-n=1                                      # Number of time steps
+dt = 0.00000001                              # Time step size
+n = int(Total_time/dt)                   # Number of time steps
 
 rho = 996.550                          # Density kg/m3
 g = 9.8                                # Gravitational acceleration m/s2
-Grid_points=100                     #Total number of grid points (Velocity faces)
+Grid_points=500                     #Total number of grid points (Velocity faces)
 Inletmassflux=900                      #kg/m2.s
 P_atm=1                                #atm
 dia=0.0154                             #m
@@ -76,26 +76,32 @@ def unsteady_1D_flow(A_n,A,u_n,p_star,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,
         u_star=Momentum(p_star,u_n,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s,u_inlet,p_exit)    #Get u_star for guessed pressure
         converge=convergence(u_star,Grid_points,rho,Area,A_n,dx,dt)                            #Check the convergence
         graph=Graph_PV(u_star,p_star)
-        graph_v=Graph_V(u_star)
-        graph_p=Graph_P(p_star)
+        #graph_v=Graph_V(u_star)
+        #graph_p=Graph_P(p_star)
         x=np.arange(0,len(u_star))
+        start_time = time.time()
         while(converge>0.001):
             p_add=Pressure_adjust(p_star,u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,p_exit)
             p_star=add(p_star,p_add,Grid_points)                                                #update the pressure
             u_star=Momentum(p_star,u_n,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s,u_inlet,p_exit)
-
-
-
+            converge=convergence(u_star,Grid_points,rho,Area,A_n,dx,dt)
             #debug
-            plot(u_star,p_star,x,graph)
+            plot(u_star,p_star,x,graph,converge)
             #plot_V(u_star,x,graph_v)
             #plot_P(p_star,x,graph_p)
-            plt.pause(0.1)
+            plt.pause(0.5)
             #debug
 
-            
-            converge=convergence(u_star,Grid_points,rho,Area,A_n,dx,dt)
-            print(converge)
+
+
+            elasp_time = time.time() - start_time
+            if elasp_time > 20:
+                break
+
+        # Save the current figure with a unique file name
+        file_name = f"graph_{t+1}.png"  # Unique file name based on iteration
+        plt.savefig(file_name)
+        plt.clf()  # Clear the current figure to prepare for the next iteration
         plt.show()    
       
         u_n=u_star
