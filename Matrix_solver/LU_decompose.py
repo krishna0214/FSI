@@ -38,5 +38,27 @@ def solve_linear_system(A, b):
         # Handle the case where A is singular (not invertible)
         raise ValueError("Matrix A is singular, and the system has no unique solution.")
 
+        
+# Test case
+A = np.array([[2, -1, 0],
+              [-1, 2, -1],
+              [0, -1, 2]])
+
+b = np.array([[1],
+              [0],
+              [1]])
+
+L, U = lu_decomposition(A)
+x = solve_lu(A, b)
+
+# Print intermediate results
+print("Matrix A:")
+print(A)
+print("\nMatrix L:")
+print(L)
+print("\nMatrix U:")
+print(U)
+print("\nSolution x:")
+print(x)
 
 """

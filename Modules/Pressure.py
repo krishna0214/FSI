@@ -51,7 +51,7 @@ def correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1,beta_bounda
     return p_
 
 
-def Pressure_adjust(p_star,u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,p_exit):
+def Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,p_exit):
 
     """    
     Pressure Adjustment part 
