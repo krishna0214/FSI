@@ -6,6 +6,7 @@ import math as mt
 import matplotlib.pyplot as plt
 from Modules.Momentum import Momentum
 from Modules.Pressure import Pressure_adjust
+from Modules.pressuredemo import Pressure_adjust1
 from Update.Pressure_update import add
 from Modules.convergence import convergence
 #from Plots.Pressure_plot import plot_pressure
@@ -49,7 +50,7 @@ A_n = np.full((2 * Grid_points + 1), A)                # Area at n_th step
 perimeter= (mt.pi)*dia                                 #perimeter at n_th step 
 p_s=np.full((2 * Grid_points + 1), perimeter)          #perimeter at n_th step
 dp= 128*d_vis*length*A*u_inlet/((mt.pi)*dia**4)        #pressure change for end points(Change the length to get the desired pressure drop)
-
+Area=np.full((2 * Grid_points + 1), A)
 
 
 """
@@ -77,10 +78,9 @@ x=np.arange(0,len(u_n))
 #plot_P(p_star,x,graph_p)
 
 # Main Algo
-def unsteady_1D_flow(A_n,A,u_n,p_star,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit):
-    for t in range(0,n):
-        Area=np.full((2 * Grid_points + 1), A)
-                                                                                               #u_n and u_star is same here
+def unsteady_1D_flow(A_n,Area,u_n,p_star,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit):
+    
+    for t in range(0,n):                                                                                        
         u_star=Momentum(p_star,u_n,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s,u_inlet,p_exit)
         if np.array_equal(u_star,u_n):
             print("Yes, the arrays are the same.")

@@ -1,11 +1,10 @@
 import numpy as np
 import math as mt 
-from Co_efficients.pressure_coeffients import get_pressure_coeffcients
 from Matrix_solver.LU_decompose import solve_lu,lu_decomposition
-
-
-
-
+from Co_efficients.mass_coefficients import get_lamda_mu
+from Co_efficients.momentum_coefficients import get_abcd
+from Co_efficients.pressure_coefficients import get_pressure_coefficients
+from Co_efficients.pressure_new import get_pressure
 
 def correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1,beta_boundary):
     """
@@ -56,7 +55,7 @@ def Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,
     """    
     Pressure Adjustment part 
     """    
-    alpha,beta,gama,z=get_pressure_coeffcients(Grid_points,u_n,u_star,Area,A_n,p_s,rho,dx,dt,d_vis) 
+    alpha,beta,gama,z=get_pressure_coefficients(Grid_points,u_n,u_star,Area,A_n,p_s,rho,dx,dt,d_vis) 
     #print(alpha,beta,gama,z)
     #print(alpha.size)
 
@@ -96,6 +95,7 @@ def Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,
     x_3B_exit=(f_boundary*rho*u_n[Grid_points-1]*p_s[2*Grid_points-2]/8)
     
     beta_boundary=(x_1B_exit/(x_2B_exit+x_3B_exit))*(Area[2*Grid_points-1]/dx)
+    
     add_p1=correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1,beta_boundary)#Solve pressure correction equation 
     #print(add_p1)
     return add_p1
