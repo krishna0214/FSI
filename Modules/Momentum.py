@@ -63,4 +63,6 @@ def Momentum(p_star,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s,u_inlet,
     u_star=Combine(u_star,u_star1,Grid_points)
     #print(u_n,'at combine')
     #print(u_star)
+    #651
+
     return u_star

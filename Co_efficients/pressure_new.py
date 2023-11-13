@@ -19,5 +19,5 @@ def get_pressure(Grid_points,u_n,u_star,Area,A_n,p_s,rho,dx,dt,d_vis):
         alpha[i]=((lamda[i]/a[i])+(lamda[i+1]/a[i+1]))*(c[i])
         beta[i]=(c[i])*(lamda[i]/a[i])
         gama[i]=(c[i])*(lamda[i+1]/a[i+1])
-        z[i]=mu[i]+(lamda[i+1]*u_star[i+1])+(lamda[i]*u_star[i])       
+        z[i]=mu[i]-(lamda[i+1]*u_star[i+1])+(lamda[i]*u_star[i])       
     return alpha,gama,beta,z
