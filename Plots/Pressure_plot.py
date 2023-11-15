@@ -11,5 +11,5 @@ def Graph_P():
     plt.tight_layout()
     return fig, ax2
     
-def plot_P(p_star,x,graph):
+def plot_P(x,p_star,graph):
     graph[1].plot(x, p_star, label='p_star',alpha=0.8)

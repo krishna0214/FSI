@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def Graph_V(u_star):
+def Graph_V():
     fig=plt.figure()
     ax1 = fig.add_subplot(111)
     ax1.set_xlabel('Grid Points')

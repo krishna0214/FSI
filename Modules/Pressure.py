@@ -23,7 +23,7 @@ def correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1):
     """
     
     n=Grid_points
-    A1 = np.zeros((n-1, n))
+    A1 = np.zeros((n-1, n-1))
     Rhs1=np.zeros((n-1,1))
 
     A1[0,0] =c_1
@@ -31,16 +31,23 @@ def correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1):
     Rhs1[0,0]=z1
     
     for i in range(1,n-1):
-        A1[i,i-1] = gama[i-1]
-        A1[i,i] = (-1*alpha[i])
-        A1[i,i+1]= (beta[i+1])
-        const = (-1*z[i])
-        Rhs1[i,0]=const
+        if i<n-2:
+            A1[i,i-1] = gama[i-1]
+            A1[i,i] = (-1*alpha[i])
+            A1[i,i+1]= (beta[i+1])
+            const = (-1*z[i])
+            Rhs1[i,0]=const
+        else:
+            A1[i,i-1] = gama[i-1]
+            A1[i,i] = (-1*alpha[i])
+            const = (-1*z[i])
+            Rhs1[i,0]=const   
         
 
     #print(A1,Rhs1)    
-    Rhs1[n-2,0]=Rhs1[n-2,0]-(A1[n-2,n-1]*p_exit)
-    co_efficientmatrix1=A1[:,0:n-1] 
+    #Rhs1[n-2,0]=Rhs1[n-2,0]-(A1[n-2,n-1]*p_exit)
+    #co_efficientmatrix1=A1[:,0:n-1] 
+    co_efficientmatrix1=A1
     #print(co_efficientmatrix1,Rhs1)
     p_=solve_lu(co_efficientmatrix1,Rhs1)    
     return p_
@@ -63,4 +70,6 @@ def Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,
     c_1,c_2,z1=Inlet_Boundary_equation(Grid_points,u_n,u_star,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,p_exit)
     add_p1=correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1)#Solve pressure correction equation 
     #print(add_p1)
+    add_p1=add_p1.reshape(Grid_points-1)
+    add_p1=np.append(add_p1,0)
     return add_p1

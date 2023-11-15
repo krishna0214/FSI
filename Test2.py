@@ -197,8 +197,9 @@ def Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,
     add_p1=correct_pressure(Grid_points,alpha,beta,gama,z,p_exit,c_1,c_2,z1)#Solve pressure correction equation 
     return add_p1   
 def add(p_add,p_star,Grid_points):
+    relaxation_factor=0.001
     p_add=p_add.reshape(Grid_points-1)
-    p_star[0:Grid_points-1] += p_add[0:Grid_points-1]
+    p_star[0:Grid_points-1] += relaxation_factor*p_add[0:Grid_points-1]
     return p_star
 # Main Algo
 def unsteady_1D_flow(A_n,A,u_n,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit):

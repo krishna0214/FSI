@@ -55,8 +55,6 @@ def Momentum(p_star,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s,u_inlet,
     #Mometum equation part 
     """
     a_values,b_values,c_values,d_values=get_abcd(Grid_points,rho,dt,dx,d_vis,A_n,Area,u_n,p_s)       #solve co-efficients at all grid points
-    #print(u_n)
-
     #Imposed continuity on Extra cell at outlet boundary 
     l1_extra_cell,mu_extra_cell,l2_extra_cell=Outlet_Boundary_const(rho,A_n,Area,dt,dx,Grid_points)
     u_star1= solve_momentum(a_values, b_values, c_values, d_values, p_star,Grid_points,u_inlet,p_exit,l1_extra_cell,mu_extra_cell,l2_extra_cell)# Solve momentum equation to find intermediate velocity (u_star)
