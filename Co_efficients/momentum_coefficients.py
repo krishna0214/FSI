@@ -15,7 +15,7 @@ def get_abcd(Grid_points,rho,dt,dx,d_vis,A_n,Area,u_n,p_s):
         else :
             f=0.3164*Re**-0.25 
     
-        a[i]=((rho*Area[2*i]/dt)+(f*rho*u_n[i]*p_s[2*i]/8))
+        a[i]=(rho*Area[2*i]/dt)+(f*rho*u_n[i]*p_s[2*i]/8)
         b[i]=((rho*Area[2*i]/(2*dx)))
         d[i]=((rho*A_n[2*i]*u_n[i]/dt))
         if i<Grid_points:
