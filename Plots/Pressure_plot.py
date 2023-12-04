@@ -13,3 +13,5 @@ def Graph_P():
     
 def plot_P(x,p_star,graph):
     graph[1].plot(x, p_star, label='p_star',alpha=0.8)
+
+    

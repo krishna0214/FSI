@@ -19,8 +19,7 @@ def Graph_Area_profile():
     plt.tight_layout()
     return fig, ax1,ax2,ax3
     
-def plot_Area(x,r1,r2,Area,Perimeter,graph):
+def plot_Area(x,r1,Area,Perimeter,graph):
     graph[1].plot(x, r1, label='Radius',alpha=0.8)
-    graph[1].plot(x, r2, label='Radius',alpha=0.8)
     graph[2].plot(x, Area, label='Area',alpha=0.8)
     graph[3].plot(x, Perimeter, label='Perimeter',alpha=0.8)

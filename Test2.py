@@ -240,7 +240,6 @@ def unsteady_1D_flow(A_n,A,u_n,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit)
         u_n=u_star
     plt.show()    
     return u_star,p_star
-
 """
 Final result 
 """

@@ -34,13 +34,12 @@ def Const_area_profile(dia ,length,Grid_points):
 def Area(dia,Grid_points,length,l1,l2):
     d_in=dia
     r_in=dia/2
-    H=dia/4
-    W=(l2-l1)/10
+    H=dia*0.5
+    W=0.5*dia
     dx=length/(2*Grid_points)
     Area_in=mt.pi*(d_in**2)/4
     p_in=mt.pi*d_in
     r_x1=np.full((2*Grid_points+1),d_in/2)
-    r_x2=np.full((2*Grid_points+1),-1*d_in/2)
     A_n=np.full((2*Grid_points+1),Area_in)
     p_s=np.full((2*Grid_points+1),p_in)
     n1=l1/dx
@@ -53,8 +52,7 @@ def Area(dia,Grid_points,length,l1,l2):
         #z=(center)-((length*i)/(2*Grid_points))
         z=(((n1+n2)/2)-i)*(dx)
         r_x1[i]= r_in+(H*(mt.exp((-z**2)/(2*(W**2)))))
-        r_x2[i]= -1*(r_in+(H*(mt.exp((-z**2)/(2*(W**2))))))
         A_n[i]=mt.pi*(r_x1[i]**2)
         p_s[i]=mt.pi*2*r_x1[i]
-    return r_x1,r_x2,A_n,p_s   
+    return r_x1,A_n,p_s   
 

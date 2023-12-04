@@ -9,7 +9,7 @@ def get_abcd(Grid_points,rho,dt,dx,d_vis,A_n,Area,u_n,p_s):
     d=np.ones((Grid_points+1))
     
     for i in range (0,Grid_points+1):
-        Re=(rho*u_n[i]*(mt.sqrt(4*A_n[i]/(mt.pi))))/d_vis
+        Re=(rho*u_n[i]*(mt.sqrt(4*A_n[2*i]/(mt.pi))))/d_vis
         if Re < 2000:
             f=64/Re
         else :
@@ -19,8 +19,7 @@ def get_abcd(Grid_points,rho,dt,dx,d_vis,A_n,Area,u_n,p_s):
         b[i]=((rho*Area[2*i]/(2*dx)))
         d[i]=((rho*A_n[2*i]*u_n[i]/dt))
         if i<Grid_points:
-            c[i]=(Area[(2*i)+1]/dx)
-    #b=0.01*b
+            c[i]=(Area[(2*i)+1]/dx)#b=0.01*b
     #a=2*a
 
     return a,b,c,d 
