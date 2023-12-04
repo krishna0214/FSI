@@ -34,7 +34,7 @@ def Const_area_profile(dia ,length,Grid_points):
 def Area(dia,Grid_points,length,l1,l2):
     d_in=dia
     r_in=dia/2
-    H=dia/10
+    H=dia/4
     W=(l2-l1)/10
     dx=length/(2*Grid_points)
     Area_in=mt.pi*(d_in**2)/4
