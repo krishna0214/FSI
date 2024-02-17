@@ -3,7 +3,6 @@ import math as mt
 
 
 
-
 def Linear_area_profile(dia ,length,Grid_points):
     d_in=dia
     d_out=dia/2
@@ -35,7 +34,7 @@ def Area(dia,Grid_points,length,l1,l2):
     d_in=dia
     r_in=dia/2
     H=dia*0.5
-    W=0.5*dia
+    W=dia*0.5
     dx=length/(2*Grid_points)
     Area_in=mt.pi*(d_in**2)/4
     p_in=mt.pi*d_in
@@ -45,8 +44,8 @@ def Area(dia,Grid_points,length,l1,l2):
     n1=l1/dx
     n2=l2/dx
     n1=int(n1)
-    n2=int(n2)
-
+    n2=int(n2+1)
+    print(n1,n2,"n1,n2")
     for i in range (n1,n2):
         #center=((n2+n1)*length)/(2*Grid_points)
         #z=(center)-((length*i)/(2*Grid_points))

@@ -27,11 +27,10 @@ All units are taken in SI system (Kilogram,Meter,Second)
 
 """
 Total_time=0.8#dt = 0.001                              # Time step size                 # Number of time steps
-
 rho = 1060                         # Density kg/m3
 g = 9.8                                # Gravitational acceleration m/s2
-Grid_points=10000               #Total number of grid points (Cell centres including extra cell at the end)
-Inletmassflux=900                      #kg/m2.s
+Grid_points=5000               #Total number of grid points (Cell centres including extra cell at the end)
+#Inletmassflux=900                      #kg/m2.s
 P_atm=1                                #atm
 dia=0.02                            #m
 d_vis=0.004                         #Ns/m2
@@ -39,7 +38,7 @@ p_exit= P_atm* 101325                  #N/m2
 A= (mt.pi)*(dia**2)/4                  #m2
 #u_inlet= Inletmassflux/(rho)           #m/s
 #u_inlet=-0.95
-length=2                               #m
+length=1                             #m
 dx = length/Grid_points 
 dt=0.0050             # Spatial grid size
 n = int(Total_time/dt) 
@@ -76,16 +75,16 @@ plt.show()
 #A_n = np.full((2 * Grid_points + 1), A)                # Area at n_th step
 #perimeter= (mt.pi)*dia                                 #perimeter at n_th step 
 #p_s=np.full((2 * Grid_points + 1), perimeter)
-a1=(2*length)/(0.5*dia)
+a1=(2*length)/(5*dia)
 l1=(length/2)-(length/a1)
 l2=(length/2)+(length/a1)
 #r_x1,A_n,p_s=Linear_area_profile(dia ,length,Grid_points)  #Area and perimeter at n_th step  
-r_x1,A_n,p_s=Area(dia,Grid_points,length,l1,l2)   
+r_x,A_n,p_s=Area(dia,Grid_points,length,l1,l2)   
 #dp= 128*d_vis*length*A*u_inlet/((mt.pi)*dia**4)        #pressure change for end points(Change the length to get the desired pressure drop)
 #print(dp,"dp")
 graph=Graph_Area_profile()
-x=np.arange(0,len(r_x1))
-plot_Area(x,r_x1,A_n,p_s,graph)
+x=np.arange(0,len(r_x))
+plot_Area(x,r_x,A_n,p_s,graph)
 plt.pause(0.5)
 plt.show()
 
@@ -153,7 +152,7 @@ def unsteady_1D_flow(A_n,u_n,p_s,Grid_points,rho,dx,dt,d_vis,n,p_exit):
             #plt.pause(1)
             converge=convergence(u_star,Grid_points,rho,Area,A_n,dx,dt)
             print(converge,"converge")
-            if converge<10**-6:
+            if converge<10**-5:
                 break                                                                         
             p_add=Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,p_exit)
             #relaxation_factor=0.5
