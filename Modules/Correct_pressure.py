@@ -46,11 +46,17 @@ def Correct_pressure(p_star,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s,
 
 """
 
-def Correct_pressure(p_star,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s):
+def Correct_pressure(p_exit,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s):
     a,b,c,d=get_abcd(Grid_points,rho,dt,dx,d_vis,A_n,Area,u_n,p_s)
-    u_hat1=u_hat(Grid_points,u_star,b)
-    p_updated=np.zeros(len(p_star))
-    p_updated[len(p_updated)-1]=p_star[len(p_star)-1]
-    for i in range(len(p_star)-2,-1,-1):
-        p_updated[i]=((a[i+1]*u_star[i+1])-(u_hat1[i+1])+(c[i+1]*p_updated[i+1])-(d[i+1]))/c[i]
+    #u_hat1=u_hat(Grid_points,u_star,b)
+    n=len(u_star)-1
+    p_updated=np.ones(n)*1000
+    p_updated[len(p_updated)-1]=p_exit
+    for i in range(len(p_updated)-2,-1,-1):
+        #p_updated[i]=(c[i+1]*p_updated[i+1])+(d[i+1])+(a[i+2]*u_star[i+2])-(a[i]*u_star[i])+((a[i+1]*u_star[i+1]))/c[i]
+        #p_updated[i]=((c[i+1]*p_updated[i+1])-(a[i]*u_star[i]))
+        c1=Area[i+1]/dx
+        c2=Area[i]/dx
+        p_updated[i]=((c1*(p_updated[i+1]))-(d[i+1])+(a[i+1]*u_star[i+1])+(a[i+2]*u_star[i+2])-(a[i]*u_star[i]))/c2
+    #print(p_updated,"p_updated")    
     return p_updated
