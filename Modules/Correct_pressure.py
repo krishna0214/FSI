@@ -1,7 +1,8 @@
 import numpy as np
-from Co_efficients.momentum_coefficients import get_abcd
+from Co_efficients.momentum_coefficients import get_abcd, get_abcd_steady
 from Matrix_solver.LU_decompose import solve_lu
 from Update.pressure_combine import pressure_Combine
+import math as mt
 
 def u_hat(Grid_points,u_star,b):
     u_nb=np.zeros(len(u_star))
@@ -55,8 +56,28 @@ def Correct_pressure(p_exit,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s)
     for i in range(len(p_updated)-2,-1,-1):
         #p_updated[i]=(c[i+1]*p_updated[i+1])+(d[i+1])+(a[i+2]*u_star[i+2])-(a[i]*u_star[i])+((a[i+1]*u_star[i+1]))/c[i]
         #p_updated[i]=((c[i+1]*p_updated[i+1])-(a[i]*u_star[i]))
-        c1=Area[i+1]/dx
-        c2=Area[i]/dx
-        p_updated[i]=((c1*(p_updated[i+1]))-(d[i+1])+(a[i+1]*u_star[i+1])+(a[i+2]*u_star[i+2])-(a[i]*u_star[i]))/c2
+        c1=Area[2*(i+1)+1]/dx
+        c2=Area[2*i+1]/dx
+        p_updated[i]=((c1*(p_updated[i+1]))-(d[i+1])+(a[i+1]*u_star[i+1])+(b[i+2]*u_star[i+2])-(b[i]*u_star[i]))/c2
+    #print(p_updated,"p_updated")    
+    return p_updated
+
+
+def Correct_pressure1(p_init,u_n,u_star,Grid_points,rho,dt,dx,d_vis,A_n,Area,p_s):
+    a,b,c,d=get_abcd(Grid_points,rho,dt,dx,d_vis,A_n,Area,u_n,p_s)
+    #u_hat1=u_hat(Grid_points,u_star,b)
+    n=len(u_star)-1
+    p_updated=np.ones(n)*10
+    p_updated[0]=p_init
+    for i in range(1,len(p_updated)):
+        #p_updated[i]=(c[i+1]*p_updated[i+1])+(d[i+1])+(a[i+2]*u_star[i+2])-(a[i]*u_star[i])+((a[i+1]*u_star[i+1]))/c[i]
+        #p_updated[i]=((c[i+1]*p_updated[i+1])-(a[i]*u_star[i]))
+        #c1=Area[2*i-1]/dx
+        #c2=Area[2*i+1]/dx
+        #p_updated[i]=((c1*(p_updated[i-1]))+(d[i+1])-(a[i+1]*u_star[i+1])+(a[i-1]*u_star[i-1])-(a[i]*u_star[i]))/c2        
+        #p_updated[i]=(((c[i-1]*(p_updated[i-1]))+(d[i+1])+(b[i-1]*u_star[i-1])-(b[i+1]*u_star[i+1])-(a[i]*u_star[i]))/(c[i]))
+        #p_updated[i]=((c[i-1]*(p_updated[i-1]))+(b[i-1]*u_star[i-1])-(b[i+1]*u_star[i+1])-())/(c[i])
+        p_updated[i]=(((Area[2*i-1]/Area[2*i+1])*(p_updated[i-1]))-((8*dx*d_vis*mt.pi*u_star[i])/Area[2*i+1])+(rho*u_star[i-1]*u_star[i-1]*Area[2*i-2]/(2*Area[2*i+1]))-(rho*u_star[i+1]*u_star[i+1]*Area[2*i+2]/(2*Area[2*i+1])))
+           
     #print(p_updated,"p_updated")    
     return p_updated

@@ -78,6 +78,8 @@ def unsteady_1D_flow(A_n,A,u_n,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit)
         p_star[i]=p_star[i+1]
     
     u_star=u_n
+    
+    
     Area=np.full((2 * Grid_points + 1), A)
 
 
@@ -99,10 +101,10 @@ def unsteady_1D_flow(A_n,A,u_n,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit)
             i=i+1
             print(i)
             plot(p_star,u_star,x1,x2,graph)
-            plt.pause(1)
+            plt.pause(5)
             converge=convergence(u_star,Grid_points,rho,Area,A_n,dx,dt)
             print(converge,"converge")
-            if converge<10**-3:
+            if converge<10**-2:
                 break                                                                         
             p_add=Pressure_adjust(u_star,Grid_points,u_n,Area,A_n,p_s,rho,dx,dt,d_vis,u_inlet,p_exit)
             relaxation_factor=0.4
@@ -133,7 +135,8 @@ def unsteady_1D_flow(A_n,A,u_n,p_s,Grid_points,rho,dx,dt,d_vis,n,u_inlet,p_exit)
         #print(p_star[0],"p_star")
         #plot_P(x1,p_update,graph_p)
         #plt.pause(0.05)   
-        u_n=u_star   
+        u_n=u_star
+           
     plt.show()    
     
 

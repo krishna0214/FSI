@@ -1,57 +1,38 @@
+
 import numpy as np
-import math as mt
+from math import pi
 
+def stenoisis_Area5(dia, Grid_points, Length):
+  L = Length
+  n = 2*Grid_points
+  dx = L / n
+  r_i = dia/2
+  r_cs = 0.00166
+  r_o = 0.00138
+  x_i = 0
+  x_o = L
+  x_is = 0.02
+  x_cs = 0.035
+  x_os = 0.05
+  r = np.zeros(n + 1)
+  x = np.zeros(n + 1)
+  x_star = np.zeros(n + 1)
+  theta = np.zeros(n + 1)
+  b = 0.4
+  for i in range(n + 1):
+    x[i] = dx * i
+    r[i] = r_i + (x[i] - x_i) * (r_o - r_i) / (x_o - x_i)
+    if x[i] == x_is:
+      r_is = r[i]
+    if x[i] == x_os:
+      r_os = r[i]
+  for i in range(n + 1):
+    if (x[i] >= x_is) and (x[i] <= x_os):
+      x_star[i] = (x[i] - x_cs) / (x_os - x_is)
+      theta[i] = x_star[i] * 2 * pi
+      r[i] = r[i] * (1 - b * 0.5 * (1 + np.cos(theta[i])))
 
-
-def Linear_area_profile(dia ,length,Grid_points):
-    d_in=dia
-    d_out=dia/2
-    Area_in=mt.pi*(d_in**2)/4
-    p_in=mt.pi*d_in
-    r_x=np.full((2*Grid_points+1),d_in/2)
-    A_n=np.full((2*Grid_points+1),Area_in)
-    p_s=np.full((2*Grid_points+1),p_in)
-    slope=(d_out-d_in)/(2*length)
-    for i in range(1,len(A_n)):
-        r_x[i]=r_x[i-1]+((slope*(length/Grid_points))/2)
-        A_n[i]=mt.pi*(r_x[i]**2)
-        p_s[i]=mt.pi*2*r_x[i]
-    return r_x,A_n,p_s
-    
-
-
-def Const_area_profile(dia ,length,Grid_points):
-    d_in=dia
-    Area_in=mt.pi*(d_in**2)/4
-    p_in=mt.pi*d_in
-    r_x=np.full((2*Grid_points+1),d_in/2)
-    A_n=np.full((2*Grid_points+1),Area_in)
-    p_s=np.full((2*Grid_points+1),p_in)
-    return r_x,A_n,p_s
-
-
-def Area(dia,Grid_points,length,l1,l2):
-    d_in=dia
-    r_in=dia/2
-    H=dia*0.5
-    W=dia*0.5
-    dx=length/(2*Grid_points)
-    Area_in=mt.pi*(d_in**2)/4
-    p_in=mt.pi*d_in
-    r_x1=np.full((2*Grid_points+1),d_in/2)
-    A_n=np.full((2*Grid_points+1),Area_in)
-    p_s=np.full((2*Grid_points+1),p_in)
-    n1=l1/dx
-    n2=l2/dx
-    n1=int(n1)
-    n2=int(n2+1)
-    print(n1,n2,"n1,n2")
-    for i in range (n1,n2):
-        #center=((n2+n1)*length)/(2*Grid_points)
-        #z=(center)-((length*i)/(2*Grid_points))
-        z=(((n1+n2)/2)-i)*(dx)
-        r_x1[i]= r_in+(H*(mt.exp((-z**2)/(2*(W**2)))))
-        A_n[i]=mt.pi*(r_x1[i]**2)
-        p_s[i]=mt.pi*2*r_x1[i]
-    return r_x1,A_n,p_s   
+  Area = pi * r**2
+  p_s = 2 * pi * r
+  return r, Area, p_s, x
 
