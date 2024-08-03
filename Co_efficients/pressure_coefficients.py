@@ -3,7 +3,7 @@ import math as mt
 
 
 #pressure correction coefficients:
-def get_pressure_coeffcients(Grid_points,u_n,u_star,Area,A_n,p_s,rho,dx,dt,d_vis):
+def get_pressure_coefficients(Grid_points,u_n,u_star,Area,A_n,p_s,rho,dx,dt,d_vis):
     alpha=np.zeros(Grid_points-1)
     beta=np.zeros(Grid_points-1)
     gama=np.zeros(Grid_points-1)
